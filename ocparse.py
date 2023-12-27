@@ -353,7 +353,8 @@ class AnalyzerOpcode():
         """Remove separators at specified bit positions
 
         """
-        for jj in seps:
+        rmseps = [jj for jj in seps if jj < len(self.seps)]
+        for jj in rmseps:
             self.seps[jj] = ''
 
     def rmbits(self, bl: list[int, ...]) -> 'AnalyzerOpcode':
@@ -806,6 +807,11 @@ class Analyzer():
 
         """
         self.newcode('', text, pos)
+
+    def rmtitles(self):
+        codes = self.get_codes()
+        cno = [jj for jj in range(len(codes)) if not codes[jj].pattern()]
+        self.delcodes(cno)
 
     def get_codes(self) -> list[AnalyzerOpcode, ...]:
         """Return list of opcodes
